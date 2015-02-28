@@ -51,6 +51,7 @@ static Window* workout_init(void) {
     .load = workout_window_load,
     .unload = workout_window_unload,
   });
+    vibes_long_pulse();
 //  spriteCount =0;
   return workoutWindow;
 }

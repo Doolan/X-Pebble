@@ -1,12 +1,13 @@
 #include <pebble.h>
 #include <workout.c>
 
+typedef enum {CLOCK, WORKOUT} WATCHFACE;
     
 static Window* window;
 static TextLayer* text_layer;
 #define BUFF 64
 Window *workoutWindow;
-    
+WATCHFACE currentWindow;
     
 
 
@@ -17,20 +18,30 @@ Window *workoutWindow;
 *                       Button Listing
 ***************************************************************/
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
-   // currentWindow = CAGE;
-    window_stack_push(workoutWindow,true);
+    if(currentWindow==CLOCK){
+        currentWindow = WORKOUT;
+        window_stack_push(workoutWindow,true);
+    }
 }
 void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
+    vibes_short_pulse();
 
 }
 void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
+     vibes_long_pulse();
 }
 
 void back_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
+    vibes_double_pulse();
+  if(currentWindow != CLOCK)
+  {
+    currentWindow = CLOCK;
+    window_stack_pop(true);
+  } 
+  else
+  {
+    window_stack_pop_all(true);
+  }    
 }
 
 void click_config(Window *window){
