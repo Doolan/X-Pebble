@@ -1,0 +1,39 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "doolansr@rose-hulman.edu",
+    "longName": "X-Pebble",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/Tree Yoga Pose.png",
+                "name": "TREE",
+                "type": "png"
+            },
+            {
+                "file": "images/Jogging Aerobic.png",
+                "name": "JOG",
+                "type": "png"
+            },
+            {
+                "file": "images/Barbells Anaerobic.png",
+                "name": "BARBELLS",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "X-Pebble",
+    "targetPlatforms": [
+        "basalt"
+    ],
+    "uuid": "13543a5b-fa03-48ad-854f-52b01327c9cb",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
