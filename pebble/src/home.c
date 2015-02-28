@@ -1,12 +1,53 @@
 #include <pebble.h>
+#include <workout.c>
 
     
 static Window* window;
 static TextLayer* text_layer;
 #define BUFF 64
+Window *workoutWindow;
+    
+    
 
-    
-    
+
+
+
+
+/***************************************************************
+*                       Button Listing
+***************************************************************/
+void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+
+   // currentWindow = CAGE;
+    window_stack_push(workoutWindow,true);
+}
+void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+
+
+}
+void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+
+}
+
+void back_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+
+}
+
+void click_config(Window *window){
+  window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_SELECT, select_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_BACK, back_single_click_handler);
+}
+
+
+
+
+
+
+
+
+
 
     
 static void window_load(Window* window) {
@@ -32,7 +73,7 @@ static void window_load(Window* window) {
     //app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_value, 
     //             ARRAY_LENGTH(initial_value), sync_success, sync_error, NULL);
 }
-    
+   
 static void window_unload(Window* window) {
      text_layer_destroy(text_layer);
 }
@@ -49,6 +90,13 @@ static void init(void) {
     });
     bool animated = true;
     window_stack_push(window, animated);
+    workoutWindow = workout_init();
+    
+    
+    //Listners for Buttons
+    window_set_click_config_provider(window, (ClickConfigProvider) click_config);
+    window_set_click_config_provider(workoutWindow,(ClickConfigProvider) click_config);
+    
 }
     
     

@@ -9,8 +9,8 @@
     "resources": {
         "media": [
             {
-                "file": "images/Tree Yoga Pose.png",
-                "name": "TREE",
+                "file": "images/Barbells Anaerobic.png",
+                "name": "BARBELLS",
                 "type": "png"
             },
             {
@@ -19,8 +19,8 @@
                 "type": "png"
             },
             {
-                "file": "images/Barbells Anaerobic.png",
-                "name": "BARBELLS",
+                "file": "images/Tree Yoga Pose.png",
+                "name": "TREE",
                 "type": "png"
             }
         ]
