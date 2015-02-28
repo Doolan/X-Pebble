@@ -9,18 +9,43 @@
     "resources": {
         "media": [
             {
-                "file": "images/Barbells Anaerobic.png",
-                "name": "BARBELLS",
+                "file": "images/Squats B.png",
+                "name": "SQUATS",
                 "type": "png"
             },
             {
-                "file": "images/Jogging Aerobic.png",
-                "name": "JOG",
+                "file": "images/PushUps B.png",
+                "name": "PUSH_UPS",
                 "type": "png"
             },
             {
-                "file": "images/Tree Yoga Pose.png",
-                "name": "TREE",
+                "file": "images/TricepPD A.png",
+                "name": "TRICEP_PUSH_DOWN",
+                "type": "png"
+            },
+            {
+                "file": "images/Plank.png",
+                "name": "PLANKS",
+                "type": "png"
+            },
+            {
+                "file": "images/Lat Pull Down A.png",
+                "name": "LAT_PULL_DOWN",
+                "type": "png"
+            },
+            {
+                "file": "images/Crunches.png",
+                "name": "CRUNCHES",
+                "type": "png"
+            },
+            {
+                "file": "images/BenchPress A.png",
+                "name": "BENCH_PRESS",
+                "type": "png"
+            },
+            {
+                "file": "images/Armcurls A.png",
+                "name": "BICEP_CURLS",
                 "type": "png"
             }
         ]
@@ -28,6 +53,7 @@
     "sdkVersion": "3",
     "shortName": "X-Pebble",
     "targetPlatforms": [
+        "aplite",
         "basalt"
     ],
     "uuid": "13543a5b-fa03-48ad-854f-52b01327c9cb",

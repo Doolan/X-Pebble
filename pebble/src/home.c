@@ -1,36 +1,63 @@
 #include <pebble.h>
-#include <workout.c>
+//#include <workout.c>
+#include "exercise_codes.h"
 
+typedef enum {CLOCK, WORKOUT} WATCHFACE;
     
 static Window* window;
 static TextLayer* text_layer;
 #define BUFF 64
-Window *workoutWindow;
+static Window *workoutWindow;
+WATCHFACE currentWindow;
+
+
+/***************************************************************
+*                          Timing
+***************************************************************/
+
+//AppTimer * app_timer_register(6000, AppTimerCallback callback, void * callback_data)
+
     
+static void load_next_workout(){
     
-
-
-
-
+}
+/**timeout_ms
+The expiry time in milliseconds from the current time
+callback
+The callback that gets called at expiry time
+callback_data
+The data that will be passed to callback**/
 
 /***************************************************************
 *                       Button Listing
 ***************************************************************/
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
-   // currentWindow = CAGE;
-    window_stack_push(workoutWindow,true);
+    if(currentWindow==CLOCK){
+        currentWindow = WORKOUT;
+        workoutWindow = genterate_workout_window(1);
+        window_stack_push(workoutWindow,true);
+    }
 }
 void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
+    vibes_short_pulse();
 
 }
 void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
+     vibes_long_pulse();
 }
 
 void back_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-
+    vibes_double_pulse();
+  if(currentWindow != CLOCK)
+  {
+    currentWindow = CLOCK;
+    window_stack_pop(true);
+    workout_deinit();
+  } 
+  else
+  {
+    window_stack_pop_all(true);
+  }    
 }
 
 void click_config(Window *window){
@@ -40,16 +67,7 @@ void click_config(Window *window){
   window_single_click_subscribe(BUTTON_ID_BACK, back_single_click_handler);
 }
 
-
-
-
-
-
-
-
-
-
-    
+   
 static void window_load(Window* window) {
     Layer* window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
@@ -63,7 +81,7 @@ static void window_load(Window* window) {
     text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
     text_layer_set_background_color(text_layer, GColorClear);
     //  text_layer_set_text_color(text_layer, GColorChromeYellow);
-    text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+    text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
     layer_add_child(window_layer, text_layer_get_layer(text_layer));
   
      //Tuplet initial_value[] = {
@@ -83,6 +101,7 @@ static void deinit(void) {
 }
 
 static void init(void) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "got here");
     window = window_create();
     window_set_window_handlers(window, (WindowHandlers){
         .load = window_load,
@@ -90,12 +109,12 @@ static void init(void) {
     });
     bool animated = true;
     window_stack_push(window, animated);
-    workoutWindow = workout_init();
+    //workoutWindow = workout_init(barbellsID, barbellsStr);
     
     
     //Listners for Buttons
     window_set_click_config_provider(window, (ClickConfigProvider) click_config);
-    window_set_click_config_provider(workoutWindow,(ClickConfigProvider) click_config);
+   // window_set_click_config_provider(workoutWindow,(ClickConfigProvider) click_config);
     
 }
     
