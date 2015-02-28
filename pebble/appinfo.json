@@ -9,33 +9,33 @@
     "resources": {
         "media": [
             {
-                "file": "images/Squats B.png",
-                "name": "SQUATS",
+                "file": "images/WarriorPose .png",
+                "name": "WARRIOR",
                 "type": "png"
             },
             {
-                "file": "images/PushUps B.png",
-                "name": "PUSH_UPS",
+                "file": "images/UpwardFacingDog .png",
+                "name": "UPWARD_DOG",
                 "type": "png"
             },
             {
-                "file": "images/TricepPD A.png",
-                "name": "TRICEP_PUSH_DOWN",
+                "file": "images/Tree Pose .png",
+                "name": "TREE_POSE",
                 "type": "png"
             },
             {
-                "file": "images/Plank.png",
-                "name": "PLANKS",
+                "file": "images/ToeTouch .png",
+                "name": "TOE_TOUCH",
                 "type": "png"
             },
             {
-                "file": "images/Lat Pull Down A.png",
-                "name": "LAT_PULL_DOWN",
+                "file": "images/Side Lunge .png",
+                "name": "SIDE_LUNGE",
                 "type": "png"
             },
             {
-                "file": "images/Crunches.png",
-                "name": "CRUNCHES",
+                "file": "images/ShoulderStretch .png",
+                "name": "ARMBAR",
                 "type": "png"
             },
             {
@@ -44,8 +44,48 @@
                 "type": "png"
             },
             {
+                "file": "images/DownwardFacingDog .png",
+                "name": "DOWNWARD_DOG",
+                "type": "png"
+            },
+            {
+                "file": "images/Butterfly .png",
+                "name": "BUTTERFLY",
+                "type": "png"
+            },
+            {
                 "file": "images/Armcurls A.png",
                 "name": "BICEP_CURLS",
+                "type": "png"
+            },
+            {
+                "file": "images/Crunches.png",
+                "name": "CRUNCHES",
+                "type": "png"
+            },
+            {
+                "file": "images/Lat Pull Down A.png",
+                "name": "LAT_PULL_DOWN",
+                "type": "png"
+            },
+            {
+                "file": "images/Plank.png",
+                "name": "PLANKS",
+                "type": "png"
+            },
+            {
+                "file": "images/TricepPD A.png",
+                "name": "TRICEP_PUSH_DOWN",
+                "type": "png"
+            },
+            {
+                "file": "images/PushUps B.png",
+                "name": "PUSH_UPS",
+                "type": "png"
+            },
+            {
+                "file": "images/Squats B.png",
+                "name": "SQUATS",
                 "type": "png"
             }
         ]
