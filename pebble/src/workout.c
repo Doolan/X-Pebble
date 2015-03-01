@@ -20,57 +20,9 @@ static int workoutinterval = 0;
 AppTimer * apptimer;
 static bool forward = true;
 //Rotations
-static GBitmapSequence *workout_sequence;
+//static GBitmapSequence *workout_sequence;
 static int frame_counter = 0;
 static bool animated = false;
-
-/************************************************************
-*                    Animation
-************************************************************/
-static void load_sequence();
-
-static void timer_handler(void *context) {
-  uint32_t next_delay;
-
-  // Advance to the next APNG frame
-  if(gbitmap_sequence_update_bitmap_next_frame(workout_sequence, workoutImage, &next_delay)) {
-    bitmap_layer_set_bitmap(background, workoutImage);
-    layer_mark_dirty(bitmap_layer_get_layer(background));
-
-    // Timer for that delay
-    app_timer_register(next_delay, timer_handler, NULL);
-
-    frame_counter++;
-  } else {
-    // Start again
-    load_sequence();
-
-    APP_LOG(APP_LOG_LEVEL_INFO, "Frames: %d", frame_counter);
-    frame_counter = 0;
-  }
-}
-
-static void load_sequence() {
-  // Free old data
-  if(workout_sequence) {
-    gbitmap_sequence_destroy(workout_sequence);
-    workout_sequence = NULL;
-  }
-  if(workoutImage) {
-    gbitmap_destroy(workoutImage);
-    workoutImage = NULL;
-  }
-
-  // Create sequence
-  workout_sequence = gbitmap_sequence_create_with_resource(currentImage);
-
-  // Create GBitmap
-  workoutImage = gbitmap_create_blank(gbitmap_sequence_get_bitmap_size(workout_sequence), GBitmapFormat8Bit);
-
-  // Begin animation
-  app_timer_register(1, timer_handler, NULL);
-}
-
 
 /***************************************************************
 *                      Timing
@@ -123,8 +75,6 @@ static void workout_window_load(Window *window) {
     //background 
     background = bitmap_layer_create(bounds);
 
-    if(!animated)
-    {//init layers BW
         Layer *simple_bg_layer = layer_create(bounds);
         layer_set_update_proc(simple_bg_layer, workoutImage_bg_update_proc);
         layer_add_child(window_layer, simple_bg_layer);
@@ -133,12 +83,7 @@ static void workout_window_load(Window *window) {
         bitmap_layer_set_alignment(background, GAlignCenter);
         bitmap_layer_set_compositing_mode(background, GCompOpAssign);
         layer_add_child(window_layer, bitmap_layer_get_layer(background));
-    }
-    else
-    {//animations
-        layer_add_child(window_layer, bitmap_layer_get_layer(background));
-        load_sequence();
-    }
+
 
          
     //Text Work Out Name
@@ -171,15 +116,9 @@ static void workout_window_load(Window *window) {
 }
 
 static void workout_window_unload(Window *window) {
-    if(animated){
-        gbitmap_sequence_destroy(workout_sequence);
-        bitmap_layer_destroy(background);
-    }
-    else{
       bitmap_layer_destroy(background);
       gbitmap_destroy(workoutImage);
-    }
-    //layer_remove_child_layers(window_layer);//marks all children as dirty and their memory should get returned    
+
     text_layer_destroy(text_layer);    
 }
 /***************************************************************

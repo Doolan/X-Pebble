@@ -12,6 +12,16 @@
     "resources": {
         "media": [
             {
+                "file": "images/WatchfaceB&W ntp.png",
+                "name": "WATCH1",
+                "type": "png"
+            },
+            {
+                "file": "images/WatchfaceB&W.png",
+                "name": "WATCH",
+                "type": "png"
+            },
+            {
                 "file": "images/WatchFaceAPNG.png",
                 "name": "WATCHFACE",
                 "type": "png-trans"
@@ -136,6 +146,7 @@
     "sdkVersion": "3",
     "shortName": "X-Pebble",
     "targetPlatforms": [
+        "aplite",
         "basalt"
     ],
     "uuid": "13543a5b-fa03-48ad-854f-52b01327c9cb",

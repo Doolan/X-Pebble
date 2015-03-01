@@ -9,9 +9,8 @@ typedef enum {CLOCK, WORKOUT} WATCHFACE;
 static Window* window;
 static TextLayer* text_layer;
 static Window *workoutWindow;
-static GBitmap *s_bitmap = NULL;
-static BitmapLayer *s_bitmap_layer;
-static GBitmapSequence *s_sequence = NULL;
+static GBitmap *clockImage;
+
 WATCHFACE currentWindow;
 static uint8_t workoutplan[50];//MUCH BIGGER THAN NEEDED
 static int arraySize =0;
@@ -19,53 +18,19 @@ int arrayPlace =0;
 static int frame_counter = 0;
 
 /***************************************************************
-*                    Front Graphics
+*                      Graphics Misc
 ***************************************************************/
-static void load_sequence();
+static void music_bg_update_proc(Layer *layer, GContext *ctx) {
+  //Layer *window_layer = window_get_root_layer(window);
+  //GRect bounds = layer_get_bounds(window_layer);
+  
+ 
+  //graphics_context_set_fill_color(ctx, GColorWhite);
+  //graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
+  //graphics_fill_rect(ctx, bounds, 11, GCornerNone);
+  //graphics_context_set_fill_color(ctx, GColorWhite);
 
-static void timer_handler(void *context) {
-  uint32_t next_delay;
-
-  // Advance to the next APNG frame
-  if(gbitmap_sequence_update_bitmap_next_frame(s_sequence, s_bitmap, &next_delay)) {
-    bitmap_layer_set_bitmap(s_bitmap_layer, s_bitmap);
-    layer_mark_dirty(bitmap_layer_get_layer(s_bitmap_layer));
-
-    // Timer for that delay
-    app_timer_register(next_delay, timer_handler, NULL);
-
-    frame_counter++;
-  } else {
-    // Start again
-    load_sequence();
-
-    APP_LOG(APP_LOG_LEVEL_INFO, "Frames: %d", frame_counter);
-    frame_counter = 0;
-  }
 }
-
-static void load_sequence() {
-  // Free old data
-  if(s_sequence) {
-    gbitmap_sequence_destroy(s_sequence);
-    s_sequence = NULL;
-  }
-  if(s_bitmap) {
-    gbitmap_destroy(s_bitmap);
-    s_bitmap = NULL;
-  }
-
-  // Create sequence
-  s_sequence = gbitmap_sequence_create_with_resource(RESOURCE_ID_WATCHFACE_WHITE);
-
-  // Create GBitmap
-  s_bitmap = gbitmap_create_blank(gbitmap_sequence_get_bitmap_size(s_sequence), GBitmapFormat8Bit);
-
-  // Begin animation
-  app_timer_register(1, timer_handler, NULL);
-}
-
-
 /***************************************************************
 *                    Advance to Next
 ***************************************************************/
@@ -162,15 +127,23 @@ static void window_load(Window* window) {
     Layer* window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
   //window_set_background_color(window, GColorOxfordBlue);
-    s_bitmap_layer = bitmap_layer_create(bounds);
-    layer_add_child(window_layer, bitmap_layer_get_layer(s_bitmap_layer));
-    load_sequence();
+ //init layers
+  //init layers
+  //Layer *simple_bg_layer = layer_create(bounds);
+  ///layer_set_update_proc(simple_bg_layer, music_bg_update_proc);
+  //layer_add_child(window_layer, simple_bg_layer);
+  
+  //background clock
+  BitmapLayer *background = bitmap_layer_create(bounds);
+  clockImage = gbitmap_create_with_resource(RESOURCE_ID_WATCH1);
+  bitmap_layer_set_bitmap(background, clockImage);
+  //bitmap_layer_set_alignment(background, GAlignBottom);
+  bitmap_layer_set_compositing_mode(background, GCompOpAssign);
+  layer_add_child(window_layer, bitmap_layer_get_layer(background));
 }
 
    
 static void window_unload(Window* window) {
-   // gbitmap_sequence_destroy(s_sequence);
-   // bitmap_layer_destroy(s_bitmap_layer);
 }
     
 static void deinit(void) {
