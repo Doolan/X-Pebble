@@ -34,13 +34,13 @@ static void load_next_workout(){
 *                       Button Listing
 ***************************************************************/
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-    vibes_long_pulse();
+    //vibes_long_pulse();
     if(currentWindow==WORKOUT){
         load_next_workout();
     }
 }
 void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-    vibes_short_pulse();
+    //vibes_short_pulse();
 
 }
 void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {

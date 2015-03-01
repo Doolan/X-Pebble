@@ -1,8 +1,6 @@
 //IMPORTS
 #include <pebble.h>
-#include "home.h"
-   
-    
+
 //WINDOWS
 static Window *workoutWindow;//THIS
 static char* workoutImageID;
@@ -22,7 +20,7 @@ static int workoutinterval = 0;
 AppTimer * apptimer;
 static bool forward = true;
 //Rotations
-static GBitmapSequence *workout_sequence = NULL;
+static GBitmapSequence *workout_sequence;
 static int frame_counter = 0;
 static bool animated = false;
 
@@ -64,7 +62,7 @@ static void load_sequence() {
   }
 
   // Create sequence
-  workout_sequence = gbitmap_sequence_create_with_resource(RESOURCE_ID_ANIMATION);
+  workout_sequence = gbitmap_sequence_create_with_resource(currentImage);
 
   // Create GBitmap
   workoutImage = gbitmap_create_blank(gbitmap_sequence_get_bitmap_size(workout_sequence), GBitmapFormat8Bit);
@@ -115,52 +113,6 @@ static void workoutImage_bg_update_proc(Layer *layer, GContext *ctx) {
     graphics_context_set_fill_color(ctx, GColorWhite);
 
 }
-
-/************************************************************
-*                    Animation
-************************************************************/
-static void load_sequence();
-
-static void timer_handler(void *context) {
-  uint32_t next_delay;
-
-  // Advance to the next APNG frame
-  if(gbitmap_sequence_update_bitmap_next_frame(workout_sequence, workoutImage, &next_delay)) {
-    bitmap_layer_set_bitmap(background, workoutImage);
-    layer_mark_dirty(bitmap_layer_get_layer(background));
-
-    // Timer for that delay
-    app_timer_register(next_delay, timer_handler, NULL);
-
-    frame_counter++;
-  } else {
-    // Start again
-    load_sequence();
-
-    APP_LOG(APP_LOG_LEVEL_INFO, "Frames: %d", frame_counter);
-    frame_counter = 0;
-  }
-}
-
-static void load_sequence() {
-  // Free old data
-  if(workout_sequence) {
-    gbitmap_sequence_destroy(workout_sequence);
-    workout_sequence = NULL;
-  }
-  if(workoutImage) {
-    gbitmap_destroy(workoutImage);
-    workoutImage = NULL;
-  }
-
-  // Create sequence
-  workout_sequence = gbitmap_sequence_create_with_resource(RESOURCE_ID_ANIMATION);
-
-  // Create GBitmap
-  workoutImage = gbitmap_create_blank(gbitmap_sequence_get_bitmap_size(workout_sequence), GBitmapFormat8Bit);
-
-  // Begin animation
-  app_timer_register(1, timer_handler, NULL);
 
 /***************************************************************
 *                       LOAD and UNLOAD
@@ -258,6 +210,3 @@ Window* workout_init() {
 void workout_deinit(void) {
    window_destroy(workoutWindow);
 }
-
-
-
