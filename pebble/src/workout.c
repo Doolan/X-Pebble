@@ -12,7 +12,7 @@ static TextLayer* start_Text_Layer;//START
 static TextLayer* finshed_Text_Layer;//NEXT
 
 static BitmapLayer* background;
-static GBitmap* workoutImage;
+static GBitmap *workoutImage;
 static uint32_t currentImage;//CODE
 static char* workoutString;
 static int workoutcycle[] = {};
@@ -173,10 +173,13 @@ static void workout_window_load(Window *window) {
 static void workout_window_unload(Window *window) {
     if(animated){
         gbitmap_sequence_destroy(workout_sequence);
+        bitmap_layer_destroy(background);
     }
-    layer_remove_child_layers(window_layer);//marks all children as dirty and their memory should get returned
-    gbitmap_destroy(workoutImage);
-    bitmap_layer_destroy(background);
+    else{
+      bitmap_layer_destroy(background);
+      gbitmap_destroy(workoutImage);
+    }
+    //layer_remove_child_layers(window_layer);//marks all children as dirty and their memory should get returned    
     text_layer_destroy(text_layer);    
 }
 /***************************************************************

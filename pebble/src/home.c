@@ -9,10 +9,62 @@ typedef enum {CLOCK, WORKOUT} WATCHFACE;
 static Window* window;
 static TextLayer* text_layer;
 static Window *workoutWindow;
+static GBitmap *s_bitmap = NULL;
+static BitmapLayer *s_bitmap_layer;
+static GBitmapSequence *s_sequence = NULL;
 WATCHFACE currentWindow;
 static uint8_t workoutplan[50];//MUCH BIGGER THAN NEEDED
 static int arraySize =0;
 int arrayPlace =0;
+static int frame_counter = 0;
+
+/***************************************************************
+*                    Front Graphics
+***************************************************************/
+static void load_sequence();
+
+static void timer_handler(void *context) {
+  uint32_t next_delay;
+
+  // Advance to the next APNG frame
+  if(gbitmap_sequence_update_bitmap_next_frame(s_sequence, s_bitmap, &next_delay)) {
+    bitmap_layer_set_bitmap(s_bitmap_layer, s_bitmap);
+    layer_mark_dirty(bitmap_layer_get_layer(s_bitmap_layer));
+
+    // Timer for that delay
+    app_timer_register(next_delay, timer_handler, NULL);
+
+    frame_counter++;
+  } else {
+    // Start again
+    load_sequence();
+
+    APP_LOG(APP_LOG_LEVEL_INFO, "Frames: %d", frame_counter);
+    frame_counter = 0;
+  }
+}
+
+static void load_sequence() {
+  // Free old data
+  if(s_sequence) {
+    gbitmap_sequence_destroy(s_sequence);
+    s_sequence = NULL;
+  }
+  if(s_bitmap) {
+    gbitmap_destroy(s_bitmap);
+    s_bitmap = NULL;
+  }
+
+  // Create sequence
+  s_sequence = gbitmap_sequence_create_with_resource(RESOURCE_ID_WATCHFACE_WHITE);
+
+  // Create GBitmap
+  s_bitmap = gbitmap_create_blank(gbitmap_sequence_get_bitmap_size(s_sequence), GBitmapFormat8Bit);
+
+  // Begin animation
+  app_timer_register(1, timer_handler, NULL);
+}
+
 
 /***************************************************************
 *                    Advance to Next
@@ -110,23 +162,15 @@ static void window_load(Window* window) {
     Layer* window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
   //window_set_background_color(window, GColorOxfordBlue);
-    text_layer = text_layer_create((GRect) {
-        .origin = {0, 62},
-        .size   = {bounds.size.w, 30}
-    });
-    
-    /** HELLO WORLD TO BE REMOVED AND REPLACED WITH CLOCK **/
-    char* str = "Hello, World";
-    text_layer_set_text(text_layer, str);
-    text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
-    text_layer_set_background_color(text_layer, GColorClear);
-    text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
-    layer_add_child(window_layer, text_layer_get_layer(text_layer));
+    s_bitmap_layer = bitmap_layer_create(bounds);
+    layer_add_child(window_layer, bitmap_layer_get_layer(s_bitmap_layer));
+    load_sequence();
 }
 
    
 static void window_unload(Window* window) {
-     text_layer_destroy(text_layer);
+    gbitmap_sequence_destroy(s_sequence);
+    bitmap_layer_destroy(s_bitmap_layer);
 }
     
 static void deinit(void) {
@@ -135,6 +179,9 @@ static void deinit(void) {
 
 static void init(void) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "got here");
+    window = window_create();
+    //window_set_background_color(window, GColorBlack);
+    window_set_fullscreen(window, true);
     window = window_create();
     window_set_window_handlers(window, (WindowHandlers){
         .load = window_load,

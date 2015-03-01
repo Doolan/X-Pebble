@@ -10,28 +10,28 @@ void genterate_workout_window(uint8_t id){
     switch(id)
     {
         case 1:
-            set_exercise_type(RESOURCE_ID_PUSH_UPS, "pushups", 60000, false);
+            set_exercise_type(RESOURCE_ID_PUSH_UPS_A_WHITE, "pushups", 60000, false);
             break;
         case 2:
             set_exercise_type(RESOURCE_ID_PLANKS, "planks", 120000, false);
             break;
         case 3:
-            set_exercise_type(RESOURCE_ID_CRUNCHES, "crunches", 60000, false);
+            set_exercise_type(RESOURCE_ID_CRUNCHES_A_WHITE, "crunches", 60000, false);
             break;
         case 4:
-            set_exercise_type(RESOURCE_ID_SQUATS, "squats", 60000, false);
+            set_exercise_type(RESOURCE_ID_SQUATS_A_WHITE, "squats", 60000, false);
             break;
         case 11:
-            set_exercise_type(RESOURCE_ID_BICEP_CURLS, "bicep curls", 45000, false);
+            set_exercise_type(RESOURCE_ID_BICEP_CURLS_A_WHITE, "bicep curls", 45000, false);
             break;
         case 13:
-            set_exercise_type(RESOURCE_ID_BENCH_PRESS, "bench press", 90000, false);
+            set_exercise_type(RESOURCE_ID_BENCH_PRESS_A_WHITE, "bench press", 90000, false);
             break;
         case 15:
-            set_exercise_type(RESOURCE_ID_LAT_PULL_DOWN, "lat pull down", 60000, false);
+            set_exercise_type(RESOURCE_ID_LAT_PULL_DOWN_A_WHITE, "lat pull down", 60000, false);
             break;
         case 16:
-            set_exercise_type(RESOURCE_ID_TRICEP_PUSH_DOWN, "tricep push down", 60000, false);
+            set_exercise_type(RESOURCE_ID_TRICEP_PUSH_DOWN_A_WHITE, "tricep push down", 60000, false);
             break;
         case 19:
             set_exercise_type(RESOURCE_ID_TOE_TOUCH, "toe touch",30000, false);

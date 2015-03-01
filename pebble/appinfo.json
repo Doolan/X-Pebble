@@ -12,6 +12,46 @@
     "resources": {
         "media": [
             {
+                "file": "images/WatchFaceAPNG.png",
+                "name": "WATCHFACE",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/TricepPD APNG.png",
+                "name": "TRICEP_PUSH_DOWN_A",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/Squats APNG.png",
+                "name": "SQUATS_A",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/Pushup APNG.png",
+                "name": "PUSH_UPS_A",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/LatPD APNG.png",
+                "name": "LAT_PULL_DOWN_A",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/Crunches APNG.png",
+                "name": "CRUNCHES_A",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/BenchPress APNG.png",
+                "name": "BENCH_PRESS_A",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/ArmCurls APNG.png",
+                "name": "BICEP_CURLS_A",
+                "type": "png-trans"
+            },
+            {
                 "file": "images/WarriorPose .png",
                 "name": "WARRIOR",
                 "type": "png"
