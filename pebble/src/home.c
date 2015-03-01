@@ -3,6 +3,10 @@
 //#include <workout.c>
 #include "exercise_codes.h"
 
+enum MsgKeys {
+    KEY_WORKOUTPLAN = 0x0,
+    KEY_WORKOUTSIZE = 0X1
+};
 typedef enum {CLOCK, WORKOUT} WATCHFACE;
     
 static Window* window;
@@ -10,11 +14,11 @@ static TextLayer* text_layer;
 #define BUFF 64
 static Window *workoutWindow;
 WATCHFACE currentWindow;
-static int workoutplan[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-static int arraySize;
+static uint8_t workoutplan[50];// = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+static int arraySize =0;
 int arrayPlace =0;
 
-
+//dict_write_data
 
 /***************************************************************
 *                    Advance to Next
@@ -84,26 +88,64 @@ void click_config(Window *window){
 /***************************************************************
 *                      App Message
 ***************************************************************/
-static void in_received_handler(DictionaryIterator *iter, void *context) 
-{
-    (void) context;
-     
-    //Get data
-    Tuple *t = dict_read_first(iter);
-    while(t != NULL)
-    {
-        process_tuple(t);
-         
-        //Get next
-        t = dict_read_next(iter);
-    }
+static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+    //read first item
+    Tuple *t = dict_read_first(iterator);
+    static char workoutplan_buffer[64];
+      static char workoutsize_buffer[8];
+    //For all items
+    int lengthtuple = t->length;
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "APPMESSAGE %d",lengthtuple);
+    //workoutLoader[lengthtuple];
+    /**for(int i = 0; i<lengthtuple;i++){
+        //APP_LOG(APP_LOG_LEVEL_DEBUG, t->value->data[0]);
+        workoutplan[i] = t->value->data[i];
+    }**/
+    memcpy(workoutplan,t->value->data,t->length);
+    arraySize = lengthtuple;
+    
+    
+    
+    
+    
+    
+    
+    
+    /**while(t != NULL){
+        //Which key was received?
+        switch(t->key){
+            case KEY_WORKOUTPLAN:
+            //DO many a thing
+                var length->length
+               // snprintf(workoutplan_buffer,sizeof(workoutplan_buffer),"%s",t->value->cstring);
+                //APP_LOG(APP_LOG_LEVEL_DEBUG, workoutplan_buffer);
+                //workoutplan = (char*) strtok(workoutplan_buffer,",");//Complier will reduce arrays to first element pointers
+                //APP_LOG(APP_LOG_LEVEL_DEBUG, workoutplan_buffer);
+                break;**/
+           /** case KEY_WORKOUTSIZE:
+                snprintf(workoutsize_buffer,sizeof(workoutsize_buffer),"%dC",(int)t->value->int32);
+                arraySize = (int) workoutsize_buffer;
+                break;**/
+            /**default:
+                APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!",(int) t->key);
+                break;**/
+       // }
+        //next thing
+        //t=dict_read_next(iterator);
+   // }
 }
 
-
-void sendAction(){
-    Tuplet value =
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
 }
 
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+}
 
 /***************************************************************
 *                      Load Unload
@@ -149,15 +191,20 @@ static void init(void) {
         .load = window_load,
         .unload = window_unload
     });
-    arraySize =  sizeof(workoutplan)/sizeof(int);
+    //arraySize =  sizeof(workoutplan)/sizeof(int);
     arrayPlace = 0;
     bool animated = true;
     
 
     //Register AppMessage events
-    app_message_register_inbox_received(in_received_handler);
+   // Register callbacks
+    app_message_register_inbox_received(inbox_received_callback);
+    app_message_register_inbox_dropped(inbox_dropped_callback);
+    app_message_register_outbox_failed(outbox_failed_callback);
+    app_message_register_outbox_sent(outbox_sent_callback);
     app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());    //Largest possible input and output buffer sizes
     
+    //Resume basic inint things
     window_stack_push(window, animated);
     workoutWindow = workout_init();
     

@@ -138,6 +138,7 @@ void set_exercise_type(uint32_t imageID, char* imageStr, int interval){
     currentImage = imageID;
     workoutString = imageStr;
     workoutinterval = interval;
+    forward = true;
 }
 
 

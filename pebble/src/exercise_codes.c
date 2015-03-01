@@ -11,7 +11,9 @@ uint32_t joggingID = RESOURCE_ID_JOG; char * joggingStr = "Jogging";
 
 Window workoutWindow = set_exercise_type(barbellsID, barbellsStr);**/
 
-void genterate_workout_window(int id){
+void genterate_workout_window(uint8_t id){
+    //int idINT = (int) id;
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "building window # %d",id);
     switch(id)
     {
         case 1:

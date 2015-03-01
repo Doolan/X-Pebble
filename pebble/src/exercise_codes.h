@@ -2,4 +2,4 @@
 #include "workout.h"
  
 
-void genterate_workout_window(int id);
+void genterate_workout_window(uint8_t id);

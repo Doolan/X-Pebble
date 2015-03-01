@@ -1,5 +1,8 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "KEY_WORKOUTPLAN": 0,
+        "KEY_WORKOUTSIZE": 1
+    },
     "capabilities": [
         ""
     ],
