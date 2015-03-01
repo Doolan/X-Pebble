@@ -6,4 +6,4 @@ void workout_deinit(void);
 
 void center_button__workout_Listener();
 
-void set_exercise_type(uint32_t imageID, char* imageStr, int interval);
+void set_exercise_type(uint32_t imageID, char* imageStr, int interval,  bool animate);

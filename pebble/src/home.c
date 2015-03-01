@@ -1,33 +1,25 @@
 #include <pebble.h>
-    
-//#include <workout.c>
 #include "exercise_codes.h"
 
 enum MsgKeys {
-    KEY_WORKOUTPLAN = 0x0,
-    KEY_WORKOUTSIZE = 0X1
+    KEY_WORKOUTPLAN = 0x0
 };
 typedef enum {CLOCK, WORKOUT} WATCHFACE;
     
 static Window* window;
 static TextLayer* text_layer;
-#define BUFF 64
 static Window *workoutWindow;
 WATCHFACE currentWindow;
-static uint8_t workoutplan[50];// = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+static uint8_t workoutplan[50];//MUCH BIGGER THAN NEEDED
 static int arraySize =0;
 int arrayPlace =0;
-
-//dict_write_data
 
 /***************************************************************
 *                    Advance to Next
 ***************************************************************/
  
 static void load_next_workout(){
-    //kill timer
     window_stack_pop(true);
-    //workout_deinit();
     arrayPlace++;
     if(arrayPlace<arraySize){
         APP_LOG(APP_LOG_LEVEL_DEBUG, "hit--Load new window");
@@ -44,7 +36,6 @@ static void load_next_workout(){
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
     vibes_long_pulse();
     if(currentWindow==WORKOUT){
-        //call next function
         load_next_workout();
     }
 }
@@ -56,7 +47,6 @@ void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
      if(currentWindow==CLOCK && arrayPlace<arraySize){
         currentWindow = WORKOUT;
         genterate_workout_window(workoutplan[arrayPlace]);
-         //window_set_click_config_provider(workoutWindow,(ClickConfigProvider) click_config);
         window_stack_push(workoutWindow,true);
     }
     else{
@@ -80,10 +70,10 @@ void back_single_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 void click_config(Window *window){
-  window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
-  window_single_click_subscribe(BUTTON_ID_SELECT, select_single_click_handler);
-  window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
-  window_single_click_subscribe(BUTTON_ID_BACK, back_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_SELECT, select_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_BACK, back_single_click_handler);
 }
 /***************************************************************
 *                      App Message
@@ -96,43 +86,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     //For all items
     int lengthtuple = t->length;
     APP_LOG(APP_LOG_LEVEL_DEBUG, "APPMESSAGE %d",lengthtuple);
-    //workoutLoader[lengthtuple];
-    /**for(int i = 0; i<lengthtuple;i++){
-        //APP_LOG(APP_LOG_LEVEL_DEBUG, t->value->data[0]);
-        workoutplan[i] = t->value->data[i];
-    }**/
     memcpy(workoutplan,t->value->data,t->length);
     arraySize = lengthtuple;
-    
-    
-    
-    
-    
-    
-    
-    
-    /**while(t != NULL){
-        //Which key was received?
-        switch(t->key){
-            case KEY_WORKOUTPLAN:
-            //DO many a thing
-                var length->length
-               // snprintf(workoutplan_buffer,sizeof(workoutplan_buffer),"%s",t->value->cstring);
-                //APP_LOG(APP_LOG_LEVEL_DEBUG, workoutplan_buffer);
-                //workoutplan = (char*) strtok(workoutplan_buffer,",");//Complier will reduce arrays to first element pointers
-                //APP_LOG(APP_LOG_LEVEL_DEBUG, workoutplan_buffer);
-                break;**/
-           /** case KEY_WORKOUTSIZE:
-                snprintf(workoutsize_buffer,sizeof(workoutsize_buffer),"%dC",(int)t->value->int32);
-                arraySize = (int) workoutsize_buffer;
-                break;**/
-            /**default:
-                APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!",(int) t->key);
-                break;**/
-       // }
-        //next thing
-        //t=dict_read_next(iterator);
-   // }
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -159,20 +114,14 @@ static void window_load(Window* window) {
         .origin = {0, 62},
         .size   = {bounds.size.w, 30}
     });
+    
+    /** HELLO WORLD TO BE REMOVED AND REPLACED WITH CLOCK **/
     char* str = "Hello, World";
     text_layer_set_text(text_layer, str);
     text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
     text_layer_set_background_color(text_layer, GColorClear);
-    //  text_layer_set_text_color(text_layer, GColorChromeYellow);
     text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
     layer_add_child(window_layer, text_layer_get_layer(text_layer));
-  
-     //Tuplet initial_value[] = {
-     //  TupletCString(MONEY, "$12,345,678")
-    // };
-  
-    //app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_value, 
-    //             ARRAY_LENGTH(initial_value), sync_success, sync_error, NULL);
 }
 
    
@@ -191,11 +140,8 @@ static void init(void) {
         .load = window_load,
         .unload = window_unload
     });
-    //arraySize =  sizeof(workoutplan)/sizeof(int);
     arrayPlace = 0;
-    bool animated = true;
-    
-
+        
     //Register AppMessage events
    // Register callbacks
     app_message_register_inbox_received(inbox_received_callback);
@@ -205,20 +151,14 @@ static void init(void) {
     app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());    //Largest possible input and output buffer sizes
     
     //Resume basic inint things
+    bool animated = true;
     window_stack_push(window, animated);
     workoutWindow = workout_init();
     
-    
     //Listners for Buttons
     window_set_click_config_provider(window, (ClickConfigProvider) click_config);
-    window_set_click_config_provider(workoutWindow,(ClickConfigProvider) click_config);
-    
+    window_set_click_config_provider(workoutWindow,(ClickConfigProvider) click_config);    
 }
-    
-  
-    
-    
-    
     
 int main(void){
     init();

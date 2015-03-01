@@ -5,10 +5,9 @@ Pebble.addEventListener('ready', function(e) {
   }
 );
 
-
-
 //listens for App Messages
 Pebble.addEventListener('appmessage',function(e){
+    //FOR STATS MOST LIKELY NOT IN THIS BUILD
     console.log("AppMessage received!");
 });
 
@@ -24,19 +23,12 @@ var xhrRequest = function(url, type, callback){
 
 
 //TOPEBBLE: Step 1 get request
-function getWorkout(){
-    console.log('hit get workout');
-    
+function getWorkout(){    
     //TOPEBBLE: Step 1 get request
     var url = "http://x-pebble.azurewebsites.net/scripts/get_all_exercise_ids.php?pebbleid=qwerty";    
     //send request to Josh for the data
     xhrRequest(url, 'GET', function(responseText){
-        var exerciseString = JSON.parse(responseText);
-        console.log(responseText, exerciseString);
-     
-   // var array = new Uint8Array(100);
-    // array1 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
-    
+        var exerciseString = JSON.parse(responseText);   
         //TOPEBBLE: Step 2, build Dictionary (required)
         var mydictionary = {
            "KEY_WORKOUTPLAN": exerciseString
