@@ -169,8 +169,8 @@ static void window_load(Window* window) {
 
    
 static void window_unload(Window* window) {
-    gbitmap_sequence_destroy(s_sequence);
-    bitmap_layer_destroy(s_bitmap_layer);
+   // gbitmap_sequence_destroy(s_sequence);
+   // bitmap_layer_destroy(s_bitmap_layer);
 }
     
 static void deinit(void) {
@@ -182,7 +182,6 @@ static void init(void) {
     window = window_create();
     //window_set_background_color(window, GColorBlack);
     window_set_fullscreen(window, true);
-    window = window_create();
     window_set_window_handlers(window, (WindowHandlers){
         .load = window_load,
         .unload = window_unload
@@ -190,7 +189,7 @@ static void init(void) {
     arrayPlace = 0;
         
     //Register AppMessage events
-   // Register callbacks
+    // Register callbacks
     app_message_register_inbox_received(inbox_received_callback);
     app_message_register_inbox_dropped(inbox_dropped_callback);
     app_message_register_outbox_failed(outbox_failed_callback);
